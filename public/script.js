@@ -4,6 +4,7 @@
 const buttonLogin = document.querySelector(".login");
 const buttonRegister = document.querySelector(".signup");
 const modalElement = document.querySelector(".modal");
+const buttonClose = document.querySelector(".close-modal");
 
 // Função para abrir ou fechar a tela
 function toggleModal(displayStyle) {
@@ -14,6 +15,7 @@ buttonLogin.addEventListener("click", () => {
   toggleModal("block");
 });
 
-buttonLogin.addEventListener("click", () => {
-  toggleModal("hidden");
+buttonClose.addEventListener("click", () => {
+  console.log('teste')
+  toggleModal("none");
 });

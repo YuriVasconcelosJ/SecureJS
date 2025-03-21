@@ -109,14 +109,13 @@ body {
 }
 
 /* Modal  */
-
 .modal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  
+  width: 40%;
+  margin: 15px;
 
   background-color: white;
   /* Devemos alterar a merda do css aqui para deixar espaço */
@@ -126,20 +125,43 @@ body {
   z-index: 10;
 }
 
-.primera, .segunda {
+.form-box {
+  margin: 10px;
   display: flex;
-  padding: 0;
-  margin: 0;
-  border: black solid 2px;
+  justify-content: center;
 }
 
-.primera {
+/* Alterar essas duas bombas */
+.modal-close-button {
+  border: #6b4226 solid 1px;
+  display: flex;
   justify-content: left;
-  max-width: 800px;
 }
 
-.segunda {
-  justify-content: right;
+.close-modal {
+  padding: 5px 20px;
+  background: transparent;
+  border: none;
+}
+
+.modal-title {
+  font-size: 34px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  
+}
+
+.modal-input {
+  width: 100%;
+  padding: 12px;
+  border: black solid 1px;
+  border-radius: 5px;
+  font-size: 16px;
+  background: #eee;
+  color: #333;
+  margin-bottom: 16px;
 }
 
 /* Esconder a modal  */

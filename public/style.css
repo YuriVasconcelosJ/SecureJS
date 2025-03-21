@@ -1,0 +1,118 @@
+/* Cores do css */
+:root {
+  --bege-claro: #f5f5dc;
+  --areia-suave: #efe5dc;
+  --caramelo-claro: #d2b48c;
+  --marrom-cafe: #6b4226;
+  --cinza-amendoado: #a89c94;
+}
+
+/* Estilo css da navabar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--areia-suave);
+  padding: 15px 20px;
+}
+
+.navbar .logo {
+  color: var(--marrom-cafe);
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+}
+
+.navbar .nav-links li {
+  margin: 0 10px;
+}
+
+.navbar .nav-links a {
+  color: var(--marrom-cafe);
+  padding: 8px 12px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 1.1em;
+}
+
+.navbar .nav-links a:hover {
+  background-color: white;
+  border-radius: 5px;
+}
+
+.navbar .buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.navbar .buttons button {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.1em;
+}
+
+.navbar .buttons .login {
+  background-color: transparent;
+  color: var(--marrom-cafe);
+  border: 1px solid white;
+}
+
+.navbar .buttons .signup {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+}
+
+/* Responsivo */
+/* Tentar deixar ele mais bonito K*/
+@media (max-width: 780px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+  }
+  .navbar .nav-links {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  .navbar .nav-links li {
+    margin: 5px 0;
+  }
+}
+
+/* Conteúdo principal */
+body {
+  background-color: var(--bege-claroas);
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px #6b4226 solid;
+}
+
+.container .texto-main {
+  display: flex;
+  justify-content: center;
+}
+
+.container .texto-main p {
+  border: 1px black solid;
+  margin: 0 10px;
+  padding: 5px 10px;
+}
+
+/* Modal  */
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+}

@@ -114,12 +114,36 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: 70%;
+  
 
-  background-color: red;
+  background-color: white;
+  /* Devemos alterar a merda do css aqui para deixar espaço */
+  /* padding: 6rem; */
+  border-radius: 5px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.primera, .segunda {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  border: black solid 2px;
+}
+
+.primera {
+  justify-content: left;
+  max-width: 800px;
+}
+
+.segunda {
+  justify-content: right;
 }
 
 /* Esconder a modal  */
 .hidden {
   display: none;
 }
+

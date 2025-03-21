@@ -13,3 +13,7 @@ function toggleModal(displayStyle) {
 buttonLogin.addEventListener("click", () => {
   toggleModal("block");
 });
+
+buttonLogin.addEventListener("click", () => {
+  toggleModal("hidden");
+});

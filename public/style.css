@@ -115,6 +115,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
+
   margin: 15px;
 
   background-color: white;
@@ -135,7 +136,7 @@ body {
 .modal-close-button {
   border: #6b4226 solid 1px;
   display: flex;
-  justify-content: left;
+  justify-content: right;
 }
 
 .close-modal {
@@ -161,7 +162,21 @@ body {
   font-size: 16px;
   background: #eee;
   color: #333;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
+}
+
+.button-login {
+  border-radius: 4px;
+  background-color: var(--bege-claro);
+  color: black;
+  cursor: pointer;
+  padding: 10px 20px;
+  width: 220px;
 }
 
 /* Esconder a modal  */

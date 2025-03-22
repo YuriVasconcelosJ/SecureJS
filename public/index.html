@@ -30,12 +30,13 @@
     <!-- Tela para Login  -->
     <div class="modal hidden">
         <div class="form-box" id="login-form">
-            <form action="">
+            <form id="loginForm">
                 <!-- Organizar o botão de fechamento da modal -->
-                <div class="modal-close-button"><button  type="button" class="close-modal">&times;</button></div>
+                <div class="modal-close-button"><button type="button" class="close-modal">&times;</button></div>
                 <h2 class="modal-title">Login</h2>
-                <input class="modal-input" type="email" name="email" placeholder="Email" required>
-                <input class="modal-input" type="password" name="password" placeholder="Password" required>
+                <input class="modal-input" id="email" type="email" name="email" placeholder="Email" required>
+                <input class="modal-input" id="password" type="password" name="password" placeholder="Password"
+                    required>
                 <div class="button-container">
                     <button class="button-login" type="submit" name="login">Login</button>
                 </div>
@@ -50,6 +51,7 @@
                 <p>Texto 1</p>
                 <p>Texto 2</p>
                 <p>Texto 3</p>
+                <p id="mensagem"></p>
             </div>
         </div>
     </main>

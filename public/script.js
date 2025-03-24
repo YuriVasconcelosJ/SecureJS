@@ -38,8 +38,7 @@ buttonCloseRegister.addEventListener("click", () => {
   toggleModal(modalElementRegister,"none");
 });
 
-
-
+// Formulário de login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -68,3 +67,13 @@ loginForm.addEventListener("submit", async (event) => {
     console.error("Erro ao fazer login:", erro);
   }
 });
+
+// Formulário de Registro
+registerForm.addEventListener("submit", async (event) =>{
+  event.preventDefault();
+
+  const emailRegister = document.querySelector('.registerEmail').value
+  const passwordRegister = document.querySelector('.registerPassword').value
+
+  
+})

@@ -3,23 +3,42 @@
 // Declaração de variáveis
 const buttonLogin = document.querySelector(".login");
 const buttonRegister = document.querySelector(".signup");
-const modalElement = document.querySelector(".modal");
-const buttonClose = document.querySelector(".close-modal");
+const modalElementLogin = document.querySelector(".modal-login");
+const modalElementRegister = document.querySelector(".modal-register");
+const buttonCloseLogin = document.querySelector(".close-modal-login");
+const buttonCloseRegister = document.querySelector(".close-modal-register");
+
+// Variáveis para envio de informação
 const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+
 
 // Função para abrir ou fechar a tela
-function toggleModal(displayStyle) {
+function toggleModal(modalElement ,displayStyle) {
   modalElement.style.display = displayStyle;
 }
 
 buttonLogin.addEventListener("click", () => {
-  toggleModal("block");
+  toggleModal(modalElementLogin,"block");
 });
 
-buttonClose.addEventListener("click", () => {
+buttonRegister.addEventListener("click", () =>{
   console.log("teste");
-  toggleModal("none");
+  toggleModal(modalElementRegister,"block");
+})
+
+
+buttonCloseLogin.addEventListener("click", () => {
+  console.log("teste");
+  toggleModal(modalElementLogin,"none");
 });
+
+
+buttonCloseRegister.addEventListener("click", () => {
+  toggleModal(modalElementRegister,"none");
+});
+
+
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();

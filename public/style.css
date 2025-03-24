@@ -109,7 +109,7 @@ body {
 }
 
 /* Modal  */
-.modal {
+.modal-login, .modal-register {
   position: absolute;
   top: 50%;
   left: 50%;

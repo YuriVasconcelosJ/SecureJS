@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <!-- Barra de navegação  -->
+    <!-- Barra de navegação -->
     <header>
         <div class="navbar">
             <div class="logo">Logo Bomba</div>
@@ -27,17 +27,17 @@
         </div>
     </header>
 
-    <!-- Tela para Login  -->
-    <!-- Englobar tudo em uma div para arrumar a posição do x da tela de login  -->
-    <div class="modal hidden">
-        <div class="form-box" id="login-form">
+    <!-- Tela para Login -->
+    <div class="modal-login hidden" id="login-modal">
+        <div class="form-box">
             <form id="loginForm">
-                <!-- Organizar o botão de fechamento da modal -->
-                <div class="modal-close-button"><button type="button" class="close-modal">&times;</button></div>
+                <!-- Botão de fechamento da modal -->
+                <div class="modal-close-button">
+                    <button type="button" class="close-modal-login">&times;</button>
+                </div>
                 <h2 class="modal-title">Login</h2>
                 <input class="modal-input" id="email" type="email" name="email" placeholder="Email" required>
-                <input class="modal-input" id="password" type="password" name="password" placeholder="Password"
-                    required>
+                <input class="modal-input" id="password" type="password" name="password" placeholder="Password" required>
                 <div class="button-container">
                     <button class="button-login" type="submit" name="login">Login</button>
                 </div>
@@ -45,26 +45,25 @@
         </div>
     </div>
 
-    <!-- Tela para Registro  -->
-    <!-- Englobar tudo em uma div para arrumar a posição do x da tela de login  -->
-    <div class="modal hidden">
-        <div class="form-box" id="login-form">
+    <!-- Tela para Registro -->
+    <div class="modal-register hidden" id="register-modal">
+        <div class="form-box">
             <form id="registerForm">
-                <!-- Organizar o botão de fechamento da modal -->
-                <div class="modal-close-button"><button type="button" class="close-modal">&times;</button></div>
-                <h2 class="modal-title">Login</h2>
+                <!-- Botão de fechamento da modal -->
+                <div class="modal-close-button">
+                    <button type="button" class="close-modal-register">&times;</button>
+                </div>
+                <h2 class="modal-title">Registro</h2>
                 <input class="modal-input" id="registerEmail" type="email" name="email" placeholder="Email" required>
-                <input class="modal-input" id="registerPassword" type="password" name="password" placeholder="Password"
-                    required>
+                <input class="modal-input" id="registerPassword" type="password" name="password" placeholder="Password" required>
                 <div class="button-container">
-                    <button class="button-register" type="submit" name="login">Register</button>
+                    <button class="button-register" type="submit" name="register">Registrar</button>
                 </div>
             </form>
         </div>
     </div>
 
-
-    <!-- Conteúdo principal da minha página -->
+    <!-- Conteúdo principal da página -->
     <main>
         <div class="container">
             <div class="texto-main">
@@ -74,8 +73,10 @@
             </div>
         </div>
     </main>
-    <!-- mensagem para informar a conexão do user -->
+
+    <!-- Mensagem para informar a conexão do usuário -->
     <p id="mensagem"></p>
+
     <script src="script.js"></script>
 </body>
 

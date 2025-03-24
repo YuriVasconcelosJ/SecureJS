@@ -28,6 +28,7 @@
     </header>
 
     <!-- Tela para Login  -->
+    <!-- Englobar tudo em uma div para arrumar a posição do x da tela de login  -->
     <div class="modal hidden">
         <div class="form-box" id="login-form">
             <form id="loginForm">
@@ -43,6 +44,25 @@
             </form>
         </div>
     </div>
+
+    <!-- Tela para Registro  -->
+    <!-- Englobar tudo em uma div para arrumar a posição do x da tela de login  -->
+    <div class="modal hidden">
+        <div class="form-box" id="login-form">
+            <form id="registerForm">
+                <!-- Organizar o botão de fechamento da modal -->
+                <div class="modal-close-button"><button type="button" class="close-modal">&times;</button></div>
+                <h2 class="modal-title">Login</h2>
+                <input class="modal-input" id="registerEmail" type="email" name="email" placeholder="Email" required>
+                <input class="modal-input" id="registerPassword" type="password" name="password" placeholder="Password"
+                    required>
+                <div class="button-container">
+                    <button class="button-register" type="submit" name="login">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Conteúdo principal da minha página -->
     <main>

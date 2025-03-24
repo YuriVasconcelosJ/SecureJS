@@ -2,8 +2,25 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const { MongoClient } = require("mongodb");
 const PORT = 3030;
+// Variáveis do mongodb
+const uri = 'mongodb://127.0.0.1:27017';
+const client = new MongoClient(uri);
 
+async function conectarBanco() {
+  try {
+    await client.connect();
+    console.log("Conectado ao MongoDB");
+  
+    const db = client.db("bancoDeDadosJavaScript");
+    const usuarios = db.collection("usuarios");
+  } catch(erro) {
+    console.log(erro);
+  }
+}
+
+// Opções do Cors
 const corsOption = {
   origin: "http://127.0.0.1:5500",
   methods: ["GET", "POST"],
@@ -33,6 +50,25 @@ app.post("/login", (req, res) => {
     res.status(401).json({ mensagem: "E-mail ou senha inválidos!" });
   }
 });
+
+app.post("register", async (req, res) =>{
+  try {
+    const { regsiterEmail, regsiterPassword} = req.body;
+    const db = client.db("bancoDeDadosJavaScript");
+    const usuarios = db.collection("usuarios");
+
+    const usuarioExistente = await usuarios.findOne({email});
+
+    if (usuarioExistente) {
+      return res.status(400).json({mensagem: "Usuário já cadastrado"});
+    }
+
+    await usuarios.insertOne({mensagem: "Usuário registrado com sucesso!"});
+  } catch(erro) {
+    console.log(erro);
+    res.status(500).json({mensagem: "Erro no servidor"})
+  }
+})
 
 app.listen(PORT, () => {
   console.log("Servidor rodando");

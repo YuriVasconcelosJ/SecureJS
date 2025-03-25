@@ -17,8 +17,8 @@
             <ul class="nav-links">
                 <li><a href="#">Início</a></li>
                 <li><a href="#">Produtos</a></li>
-                <li><a href="#">Loja</a></li>
-                <li><a href="#">Doces</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Sobre Nós</a></li>
             </ul>
             <div class="buttons">
                 <button class="button login">Login</button>
@@ -27,14 +27,14 @@
         </div>
     </header>
 
-    <!-- Tela para Login -->
+    <!-- Form para Login -->
     <div class="modal-login hidden" id="login-modal">
+        <!-- Botão de fechamento da modal -->
+        <div class="modal-close-button">
+            <button type="button" class="close-modal-login">&times;</button>
+        </div>
         <div class="form-box">
             <form id="loginForm">
-                <!-- Botão de fechamento da modal -->
-                <div class="modal-close-button">
-                    <button type="button" class="close-modal-login">&times;</button>
-                </div>
                 <h2 class="modal-title">Login</h2>
                 <input class="modal-input" id="email" type="email" name="email" placeholder="Email" required>
                 <input class="modal-input" id="password" type="password" name="password" placeholder="Password" required>
@@ -45,14 +45,14 @@
         </div>
     </div>
 
-    <!-- Tela para Registro -->
+    <!-- Form para Registro -->
     <div class="modal-register hidden" id="register-modal">
+        <!-- Botão de fechamento da modal -->
+        <div class="modal-close-button">
+            <button type="button" class="close-modal-register">&times;</button>
+        </div>
         <div class="form-box">
             <form id="registerForm">
-                <!-- Botão de fechamento da modal -->
-                <div class="modal-close-button">
-                    <button type="button" class="close-modal-register">&times;</button>
-                </div>
                 <h2 class="modal-title">Registro</h2>
                 <input class="modal-input" id="registerEmail" type="email" name="email" placeholder="Email" required>
                 <input class="modal-input" id="registerPassword" type="password" name="password" placeholder="Password" required>

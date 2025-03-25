@@ -14,28 +14,28 @@ const registerForm = document.getElementById("registerForm");
 
 
 // Função para abrir ou fechar a tela
-function toggleModal(modalElement ,displayStyle) {
+function toggleModal(modalElement, displayStyle) {
   modalElement.style.display = displayStyle;
 }
 
 buttonLogin.addEventListener("click", () => {
-  toggleModal(modalElementLogin,"block");
+  toggleModal(modalElementLogin, "block");
 });
 
-buttonRegister.addEventListener("click", () =>{
+buttonRegister.addEventListener("click", () => {
   console.log("teste");
-  toggleModal(modalElementRegister,"block");
+  toggleModal(modalElementRegister, "block");
 })
 
 
 buttonCloseLogin.addEventListener("click", () => {
   console.log("teste");
-  toggleModal(modalElementLogin,"none");
+  toggleModal(modalElementLogin, "none");
 });
 
 
 buttonCloseRegister.addEventListener("click", () => {
-  toggleModal(modalElementRegister,"none");
+  toggleModal(modalElementRegister, "none");
 });
 
 // Formulário de login
@@ -69,11 +69,11 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 // Formulário de Registro
-registerForm.addEventListener("submit", async (event) =>{
+registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailRegister = document.querySelector('registerEmail').value
-  const passwordRegister = document.querySelector('registerPassword').value
+  const emailRegister = document.querySelector('#registerEmail').value;
+  const passwordRegister = document.querySelector('#registerPassword').value;
 
   try {
     const resposta = await fetch("http://localhost:3030/register", {

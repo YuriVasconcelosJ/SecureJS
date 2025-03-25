@@ -51,19 +51,20 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.post("register", async (req, res) =>{
+app.post("/register", async (req, res) =>{
   try {
-    const { regsiterEmail, regsiterPassword} = req.body;
+    const { registerEmail, registerPassword} = req.body;
     const db = client.db("bancoDeDadosJavaScript");
     const usuarios = db.collection("usuarios");
 
-    const usuarioExistente = await usuarios.findOne({email});
+    const usuarioExistente = await usuarios.findOne({registerEmail});
 
     if (usuarioExistente) {
       return res.status(400).json({mensagem: "Usuário já cadastrado"});
     }
 
-    await usuarios.insertOne({mensagem: "Usuário registrado com sucesso!"});
+    await usuarios.insertOne({ email, password });
+    res.status(201).json({ mensagem: "Usuário registrado com sucesso!" });
   } catch(erro) {
     console.log(erro);
     res.status(500).json({mensagem: "Erro no servidor"})

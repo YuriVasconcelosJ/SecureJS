@@ -72,8 +72,28 @@ loginForm.addEventListener("submit", async (event) => {
 registerForm.addEventListener("submit", async (event) =>{
   event.preventDefault();
 
-  const emailRegister = document.querySelector('.registerEmail').value
-  const passwordRegister = document.querySelector('.registerPassword').value
+  const emailRegister = document.querySelector('registerEmail').value
+  const passwordRegister = document.querySelector('registerPassword').value
 
-  
+  try {
+    const resposta = await fetch("http://localhost:3030/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ emailRegister, passwordRegister }),
+    });
+
+    const dados = await resposta.json();
+    document.getElementById("mensagem").textContent = dados.mensagem;
+
+    if (resposta.ok) {
+      alert("Usuário cadastrado com sucesso!");
+      // Aqui você pode redirecionar para outra página, armazenar um token, etc.
+    } else {
+      alert("Erro ao cadastrar usuário: " + dados.mensagem);
+    }
+  } catch (erro) {
+    console.error("Erro ao fazer cadastro:", erro);
+  }
 })

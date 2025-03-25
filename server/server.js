@@ -20,6 +20,8 @@ async function conectarBanco() {
   }
 }
 
+conectarBanco ()
+
 // Opções do Cors
 const corsOption = {
   origin: "http://127.0.0.1:5500",
@@ -63,7 +65,7 @@ app.post("/register", async (req, res) =>{
       return res.status(400).json({mensagem: "Usuário já cadastrado"});
     }
 
-    await usuarios.insertOne({ email, password });
+    await usuarios.insertOne({ registerEmail, registerPassword });
     res.status(201).json({ mensagem: "Usuário registrado com sucesso!" });
   } catch(erro) {
     console.log(erro);

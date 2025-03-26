@@ -1,5 +1,4 @@
 "use strict";
-
 // Declaração de variáveis
 const buttonLogin = document.querySelector(".login");
 const buttonRegister = document.querySelector(".signup");
@@ -66,7 +65,7 @@ loginForm.addEventListener("submit", async (event) => {
   const password = document.getElementById("password").value;
 
   try {
-    const resposta = await fetch("http://localhost:3030/login", {
+    const resposta = await fetch("http://localhost:3030/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,8 +77,9 @@ loginForm.addEventListener("submit", async (event) => {
     document.getElementById("mensagem").textContent = dados.mensagem;
 
     if (resposta.ok) {
+      
       alert("Login bem-sucedido!");
-      localStorage.removeItem("loginAttempts"); // Resetar tentativas ao logar
+      localStorage.removeItem("loginAttempts"); 
     } else {
       alert("Falha no login");
       registerFailedAttempt();
@@ -97,14 +97,14 @@ registerForm.addEventListener("submit", async (event) => {
   const passwordRegister = document.querySelector("#registerPassword").value;
 
   try {
-    const resposta = await fetch("http://localhost:3030/register", {
+    const resposta = await fetch("http://localhost:3030/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: emailRegister, // Correto
-        password: passwordRegister, // Correto
+        email: emailRegister, 
+        password: passwordRegister, 
       }),
     });
 
@@ -113,7 +113,6 @@ registerForm.addEventListener("submit", async (event) => {
 
     if (resposta.ok) {
       alert("Usuário cadastrado com sucesso!");
-      // Aqui você pode redirecionar para outra página, armazenar um token, etc.
     } else {
       alert("Erro ao cadastrar usuário: " + dados.mensagem);
     }

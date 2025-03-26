@@ -78,8 +78,8 @@ registerForm.addEventListener("submit", async (event) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        registerEmail: emailRegister,
-        registerPassword: passwordRegister,
+        email: emailRegister, // Correto
+        password: passwordRegister, // Correto
       }),
     });
 
@@ -93,6 +93,6 @@ registerForm.addEventListener("submit", async (event) => {
       alert("Erro ao cadastrar usuário: " + dados.mensagem);
     }
   } catch (erro) {
-    console.error("Erro ao fazer cadastro:", erro); // Correção aqui
+    console.error("Erro ao fazer cadastro:", erro);
   }
 });

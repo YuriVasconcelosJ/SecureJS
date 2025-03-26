@@ -5,26 +5,25 @@ const { MongoClient } = require("mongodb");
 const bcrypt = require("bcrypt");
 const PORT = 3030;
 
-// Variáveis do MongoDB
 const uri = "mongodb://127.0.0.1:27017";
 const client = new MongoClient(uri);
 
-// Função de conexão com o banco
 async function conectarBanco() {
   try {
     await client.connect();
     console.log("Conectado ao MongoDB");
-
     const db = client.db("bancoDeDadosJavaScript");
-    const usuarios = db.collection("usuarios");
-    return usuarios; // Retorna a coleção de usuários
+    return db.collection("usuarios");
   } catch (erro) {
-    console.log("Erro ao conectar ao banco:", erro); // Log adicional
+    console.log("Erro ao conectar ao banco:", erro);
     throw new Error("Erro ao conectar ao banco de dados");
   }
 }
 
-// Opções do Cors
+const loginAttempts = {}; // Armazena tentativas de login por IP
+const LOCK_TIME = 5 * 60 * 1000; // 5 minutos de bloqueio
+const MAX_ATTEMPTS = 3;
+
 const corsOption = {
   origin: "http://127.0.0.1:5500",
   methods: ["GET", "POST"],
@@ -34,62 +33,63 @@ const corsOption = {
 app.use(express.json());
 app.use(cors(corsOption));
 
-// Rota de teste
-app.get("/", (req, res) => {
-  res.send("Aplicação rodando");
-});
-
-// Rota de login
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  // Simulando um usuário cadastrado (depois isso vai vir do banco)
-  const usuarioFake = {
-    email: "teste@email.com",
-    password: "123456", // OBS: No futuro, as senhas devem ser criptografadas
-  };
-
-  if (email === usuarioFake.email && password === usuarioFake.password) {
-    res.status(200).json({ mensagem: "Login realizado com sucesso!" });
-  } else {
-    res.status(401).json({ mensagem: "E-mail ou senha inválidos!" });
-  }
-});
-
-app.post("/register", async (req, res) => {
   try {
-    const { registerEmail, registerPassword } = req.body;
     const usuarios = await conectarBanco();
+    
+    // Buscar usuário pelo e-mail
+    const usuario = await usuarios.findOne({ email });
 
-    // Verificando se o usuário já existe
-    const usuarioExistente = await usuarios.findOne({ email: registerEmail });
-
-    if (usuarioExistente) {
-      return res.status(400).json({ mensagem: "Usuário já cadastrado" });
+    if (!usuario) {
+      return res.status(401).json({ mensagem: "Usuário não encontrado!" });
     }
 
-    // Criptografando a senha antes de salvar
-    const salt = await bcrypt.genSalt(10); // Gera um salt
-    const hashedPassword = await bcrypt.hash(registerPassword, salt); // Criptografa a senha com salt
+    // Comparar a senha informada com a senha armazenada (hash)
+    const senhaCorreta = await bcrypt.compare(password, usuario.password);
+    if (!senhaCorreta) {
+      console.log(`Usuário:${usuario._id}`);
+      console.log(`Senha correta:${senhaCorreta}`);
+      console.log(`Senha inserida:${usuario.password}`);
+      return res.status(401).json({ mensagem: usuario._id, senhaCorreta });
+    }
 
-    // Log antes de tentar inserir no banco
-    console.log("Inserindo usuário:", registerEmail, hashedPassword);
+    res.status(200).json({ mensagem: "Login realizado com sucesso!" });
 
-    // Inserindo o novo usuário no banco de dados com a senha criptografada
-    await usuarios.insertOne({
-      email: registerEmail,
-      password: hashedPassword, // Senha criptografada
-    });
-
-    res.status(200).json({ mensagem: "Usuário registrado com sucesso!" });
   } catch (erro) {
-    // O erro está aqui
-    console.log("Erro ao registrar usuário:", erro); // Log detalhado do erro
+    console.error("Erro no login:", erro);
     res.status(500).json({ mensagem: "Erro no servidor" });
   }
 });
 
-// Inicia o servidor
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  
+  try {
+    const usuarios = await conectarBanco();
+    
+    // Verificar se o usuário já existe
+    const usuarioExistente = await usuarios.findOne({ email });
+    if (usuarioExistente) {
+      return res.status(400).json({ mensagem: "E-mail já cadastrado!" });
+    }
+    
+    // Criptografar a senha antes de salvar
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
+    // Inserir usuário no banco
+    await usuarios.insertOne({ email, password: hashedPassword });
+    
+    res.status(201).json({ mensagem: "Usuário registrado com sucesso!" });
+    
+  } catch (erro) {
+    console.error("Erro no registro:", erro);
+    res.status(500).json({ mensagem: "Erro ao registrar usuário" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("Servidor rodando na porta " + PORT);
 });

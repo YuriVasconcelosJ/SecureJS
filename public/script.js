@@ -12,7 +12,6 @@ const buttonCloseRegister = document.querySelector(".close-modal-register");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
 
-
 // Função para abrir ou fechar a tela
 function toggleModal(modalElement, displayStyle) {
   modalElement.style.display = displayStyle;
@@ -25,14 +24,12 @@ buttonLogin.addEventListener("click", () => {
 buttonRegister.addEventListener("click", () => {
   console.log("teste");
   toggleModal(modalElementRegister, "block");
-})
-
+});
 
 buttonCloseLogin.addEventListener("click", () => {
   console.log("teste");
   toggleModal(modalElementLogin, "none");
 });
-
 
 buttonCloseRegister.addEventListener("click", () => {
   toggleModal(modalElementRegister, "none");
@@ -67,13 +64,12 @@ loginForm.addEventListener("submit", async (event) => {
     console.error("Erro ao fazer login:", erro);
   }
 });
-
 // Formulário de Registro
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailRegister = document.querySelector('#registerEmail').value;
-  const passwordRegister = document.querySelector('#registerPassword').value;
+  const emailRegister = document.querySelector("#registerEmail").value;
+  const passwordRegister = document.querySelector("#registerPassword").value;
 
   try {
     const resposta = await fetch("http://localhost:3030/register", {
@@ -81,7 +77,10 @@ registerForm.addEventListener("submit", async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ emailRegister, passwordRegister }),
+      body: JSON.stringify({
+        registerEmail: emailRegister,
+        registerPassword: passwordRegister,
+      }),
     });
 
     const dados = await resposta.json();
@@ -94,6 +93,6 @@ registerForm.addEventListener("submit", async (event) => {
       alert("Erro ao cadastrar usuário: " + dados.mensagem);
     }
   } catch (erro) {
-    console.error("Erro ao fazer cadastro:", erro);
+    console.error("Erro ao fazer cadastro:", erro); // Correção aqui
   }
-})
+});

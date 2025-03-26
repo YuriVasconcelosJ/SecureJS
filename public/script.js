@@ -22,12 +22,10 @@ buttonLogin.addEventListener("click", () => {
 });
 
 buttonRegister.addEventListener("click", () => {
-  console.log("teste");
   toggleModal(modalElementRegister, "block");
 });
 
 buttonCloseLogin.addEventListener("click", () => {
-  console.log("teste");
   toggleModal(modalElementLogin, "none");
 });
 
@@ -35,9 +33,34 @@ buttonCloseRegister.addEventListener("click", () => {
   toggleModal(modalElementRegister, "none");
 });
 
+// Função para verificar se o usuário está bloqueado
+function isUserBlocked() {
+  const blockedUntil = localStorage.getItem("blockedUntil");
+  if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
+    alert("Você excedeu o número máximo de tentativas. Tente novamente mais tarde.");
+    return true;
+  }
+  return false;
+}
+
+// Função para registrar uma tentativa falha
+function registerFailedAttempt() {
+  let attempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
+  attempts++;
+  localStorage.setItem("loginAttempts", attempts);
+
+  if (attempts >= 5) {
+    const blockTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutos
+    localStorage.setItem("blockedUntil", blockTime);
+    alert("Você excedeu o número máximo de tentativas. Tente novamente em 5 minutos.");
+  }
+}
+
 // Formulário de login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  if (isUserBlocked()) return;
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -56,14 +79,16 @@ loginForm.addEventListener("submit", async (event) => {
 
     if (resposta.ok) {
       alert("Login bem-sucedido!");
-      // Aqui você pode redirecionar para outra página, armazenar um token, etc.
+      localStorage.removeItem("loginAttempts"); // Resetar tentativas ao logar
     } else {
-      alert("Falha no login: " + dados.mensagem);
+      alert("Falha no login");
+      registerFailedAttempt();
     }
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);
   }
 });
+
 // Formulário de Registro
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();

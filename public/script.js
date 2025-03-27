@@ -12,7 +12,6 @@ const buttonCloseRegister = document.querySelector(".close-modal-register");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
 
-
 // Função para abrir ou fechar a tela
 function toggleModal(modalElement, displayStyle) {
   modalElement.style.display = displayStyle;
@@ -23,24 +22,45 @@ buttonLogin.addEventListener("click", () => {
 });
 
 buttonRegister.addEventListener("click", () => {
-  console.log("teste");
   toggleModal(modalElementRegister, "block");
-})
-
-
-buttonCloseLogin.addEventListener("click", () => {
-  console.log("teste");
-  toggleModal(modalElementLogin, "none");
 });
 
+buttonCloseLogin.addEventListener("click", () => {
+  toggleModal(modalElementLogin, "none");
+});
 
 buttonCloseRegister.addEventListener("click", () => {
   toggleModal(modalElementRegister, "none");
 });
 
+// Função para verificar se o usuário está bloqueado
+function isUserBlocked() {
+  const blockedUntil = localStorage.getItem("blockedUntil");
+  if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
+    alert("Você excedeu o número máximo de tentativas. Tente novamente mais tarde.");
+    return true;
+  }
+  return false;
+}
+
+// Função para registrar uma tentativa falha
+function registerFailedAttempt() {
+  let attempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
+  attempts++;
+  localStorage.setItem("loginAttempts", attempts);
+
+  if (attempts >= 5) {
+    const blockTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutos
+    localStorage.setItem("blockedUntil", blockTime);
+    alert("Você excedeu o número máximo de tentativas. Tente novamente em 5 minutos.");
+  }
+}
+
 // Formulário de login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  if (isUserBlocked()) return;
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -59,9 +79,10 @@ loginForm.addEventListener("submit", async (event) => {
 
     if (resposta.ok) {
       alert("Login bem-sucedido!");
-      // Aqui você pode redirecionar para outra página, armazenar um token, etc.
+      localStorage.removeItem("loginAttempts"); // Resetar tentativas ao logar
     } else {
-      alert("Falha no login: " + dados.mensagem);
+      alert("Falha no login");
+      registerFailedAttempt();
     }
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);
@@ -72,8 +93,8 @@ loginForm.addEventListener("submit", async (event) => {
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailRegister = document.querySelector('#registerEmail').value;
-  const passwordRegister = document.querySelector('#registerPassword').value;
+  const emailRegister = document.querySelector("#registerEmail").value;
+  const passwordRegister = document.querySelector("#registerPassword").value;
 
   try {
     const resposta = await fetch("http://localhost:3030/register", {
@@ -81,7 +102,10 @@ registerForm.addEventListener("submit", async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ emailRegister, passwordRegister }),
+      body: JSON.stringify({
+        email: emailRegister, // Correto
+        password: passwordRegister, // Correto
+      }),
     });
 
     const dados = await resposta.json();
@@ -96,4 +120,4 @@ registerForm.addEventListener("submit", async (event) => {
   } catch (erro) {
     console.error("Erro ao fazer cadastro:", erro);
   }
-})
+});

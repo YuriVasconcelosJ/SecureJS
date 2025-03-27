@@ -1,28 +1,29 @@
-// Declaração de variáveis
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const { MongoClient } = require("mongodb");
+const bcrypt = require("bcrypt");
 const PORT = 3030;
-// Variáveis do mongodb
-const uri = 'mongodb://127.0.0.1:27017';
+
+const uri = "mongodb://127.0.0.1:27017";
 const client = new MongoClient(uri);
 
 async function conectarBanco() {
   try {
     await client.connect();
     console.log("Conectado ao MongoDB");
-  
     const db = client.db("bancoDeDadosJavaScript");
-    const usuarios = db.collection("usuarios");
-  } catch(erro) {
-    console.log(erro);
+    return db.collection("usuarios");
+  } catch (erro) {
+    console.log("Erro ao conectar ao banco:", erro);
+    throw new Error("Erro ao conectar ao banco de dados");
   }
 }
 
-conectarBanco ()
+const loginAttempts = {}; // Armazena tentativas de login por IP
+const LOCK_TIME = 5 * 60 * 1000; // 5 minutos de bloqueio
+const MAX_ATTEMPTS = 3;
 
-// Opções do Cors
 const corsOption = {
   origin: "http://127.0.0.1:5500",
   methods: ["GET", "POST"],
@@ -30,49 +31,65 @@ const corsOption = {
 };
 
 app.use(express.json());
-
 app.use(cors(corsOption));
 
-app.get("/", (req, res) => {
-  res.send("Aplicação rodando");
-});
-
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  // Simulando um usuário cadastrado (depois isso vai vir do banco)
-  const usuarioFake = {
-    email: "teste@email.com",
-    password: "123456", // OBS: No futuro, as senhas devem ser criptografadas
-  };
+  try {
+    const usuarios = await conectarBanco();
+    
+    // Buscar usuário pelo e-mail
+    const usuario = await usuarios.findOne({ email });
 
-  if (email === usuarioFake.email && password === usuarioFake.password) {
+    if (!usuario) {
+      return res.status(401).json({ mensagem: "Usuário não encontrado!" });
+    }
+
+    // Comparar a senha informada com a senha armazenada (hash)
+    const senhaCorreta = await bcrypt.compare(password, usuario.password);
+    if (!senhaCorreta) {
+      console.log(`Usuário:${usuario._id}`);
+      console.log(`Senha correta:${senhaCorreta}`);
+      console.log(`Senha inserida:${usuario.password}`);
+      return res.status(401).json({ mensagem: usuario._id, senhaCorreta });
+    }
+
     res.status(200).json({ mensagem: "Login realizado com sucesso!" });
-  } else {
-    res.status(401).json({ mensagem: "E-mail ou senha inválidos!" });
+
+  } catch (erro) {
+    console.error("Erro no login:", erro);
+    res.status(500).json({ mensagem: "Erro no servidor" });
   }
 });
 
-app.post("/register", async (req, res) =>{
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  
   try {
-    const { registerEmail, registerPassword} = req.body;
-    const db = client.db("bancoDeDadosJavaScript");
-    const usuarios = db.collection("usuarios");
-
-    const usuarioExistente = await usuarios.findOne({registerEmail});
-
+    const usuarios = await conectarBanco();
+    
+    // Verificar se o usuário já existe
+    const usuarioExistente = await usuarios.findOne({ email });
     if (usuarioExistente) {
-      return res.status(400).json({mensagem: "Usuário já cadastrado"});
+      return res.status(400).json({ mensagem: "E-mail já cadastrado!" });
     }
-
-    await usuarios.insertOne({ registerEmail, registerPassword });
+    
+    // Criptografar a senha antes de salvar
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
+    // Inserir usuário no banco
+    await usuarios.insertOne({ email, password: hashedPassword });
+    
     res.status(201).json({ mensagem: "Usuário registrado com sucesso!" });
-  } catch(erro) {
-    console.log(erro);
-    res.status(500).json({mensagem: "Erro no servidor"})
+    
+  } catch (erro) {
+    console.error("Erro no registro:", erro);
+    res.status(500).json({ mensagem: "Erro ao registrar usuário" });
   }
-})
+});
 
 app.listen(PORT, () => {
-  console.log("Servidor rodando");
+  console.log("Servidor rodando na porta " + PORT);
 });

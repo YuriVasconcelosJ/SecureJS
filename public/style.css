@@ -7,7 +7,7 @@
   --cinza-amendoado: #a89c94;
 }
 
-/* Estilo css da navabar */
+/* Estilo css da navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -16,10 +16,11 @@
   padding: 15px 20px;
 }
 
-.navbar .logo {
-  color: var(--marrom-cafe);
-  font-size: 1.5em;
-  font-weight: bold;
+.navbar .logo img{
+  max-width: 20px;
+  max-height: 20px;
+  width: auto;
+  height: auto;
 }
 
 .navbar .nav-links {
@@ -92,9 +93,9 @@ body {
 
 .container {
   width: 80%;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 20px;
-  border: 1px #6b4226 solid;
+  /*border: 1px #6b4226 solid;*/
 }
 
 .container .texto-main {
@@ -103,9 +104,11 @@ body {
 }
 
 .container .texto-main p {
-  border: 1px black solid;
-  margin: 0 10px;
+  border: none;
+  margin: 0 20px;
   padding: 5px 10px;
+  background-color: var(--areia-suave);
+  border-radius: 10px;
 }
 
 /* Modal  */
